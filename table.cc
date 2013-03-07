@@ -79,13 +79,13 @@ void Table::RowUpdate(const unsigned src, const map<unsigned,double> toUpdate)
     //add to table
     //update nextHop
     dist[src] = toUpdate;
-    map<unsigned,double>::iterator iter = toUpdate.begin();
+    map<unsigned,double>::iterator iter = dist[src].begin();
     //check for new nodes
-    while(iter!=toUpdate.end())
+    while(iter!=dist[src].end())
     {
-        //if it's not present in this node's links
-        // and not in the nextHop table
-        if(dist[id].count(iter->first)==0&&nextHop.count()==0)
+        //if a node is not present in this node's links
+        // and also not in the nextHop table
+        if(dist[id].count(iter->first)==0&&nextHop.count(iter->first)==0)
         {
             //add to nextHop table
             nextHop[iter->first] = src;
@@ -116,7 +116,7 @@ void Table::SelfUpdate()
     double nextDist;
     //iterate through nextHop
     //compare dist from this node to distance through intermediate node
-    map<unsigned,double>::iterator outside = nextHop.begin();
+    map<unsigned,unsigned>::iterator outside = nextHop.begin();
     map<unsigned, map<unsigned,  double> >::iterator inside;
     while (outside!=nextHop.end()) {
         //store current shortest path

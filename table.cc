@@ -1,4 +1,6 @@
 #include "table.h"
+#include "context.h"
+#include "error.h"
 
 #if defined(GENERIC)
 ostream & Table::Print(ostream &os) const
@@ -32,9 +34,9 @@ Table *get_routing_table() const
 Table::Table()
 { throw GeneralException(); }
 
-Table::Table(const Node &myNode) :
+Table::Table(const int myID) :
 {
-    node = myNode;
+    id = myID;
     deque<*Link> outLinks = myNode.GetOutgoingLinks();
     map<unsigned, map<unsigned, double>> dist;
     map<unsigned, unsigned> nextHop;
@@ -69,7 +71,7 @@ bool SelfUpdate(const Link *l)
     this.selfUpdate;
 }
 
-Table *get_routing_table() const
+Table *Table::get_routing_table() const
 {
     return this;
 }

@@ -38,15 +38,16 @@ class Table {
 #if defined(DISTANCEVECTOR)
 
 #include <deque>
-
+#include <map>
+#include "node.h"
 class Table {
  private:
- 	map<unsigned, map<unsigned, double>> dist;
+ 	map<unsigned, map<unsigned, double> > dist;
  	map<unsigned, unsigned> nextHop;
- 	Node* node;
+ 	int id;
  public:
-    Table::Table()
-    Table::Table(const Node &myNode) 
+   Table();
+   Table(const int myID); 
    ostream & Print(ostream &os) const;
    unsigned GetNext(unsigned end);
    map<unsigned,double> GetRow();

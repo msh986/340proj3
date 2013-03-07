@@ -51,7 +51,7 @@ class Table {
    ostream & Print(ostream &os) const;
    unsigned GetNext(unsigned end);
    map<unsigned,double> GetRow();
-   bool RowUpdate(const unsigned src, const map<unsigned,double> toUpdate);
+   void RowUpdate(const unsigned src, const map<unsigned,double> toUpdate);
    void ChangeLink(const Link *l);
    void SelfUpdate();
    Table *get_routing_table() const;

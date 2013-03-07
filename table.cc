@@ -46,18 +46,18 @@ ostream & Print(ostream &os) const
 {
     
 }
-unsigned GetNext(unsigned end)
+unsigned Table::GetNext(unsigned end)
 {
     //nextHop should be complete
     return nextHop[end];
 }
-map<unsigned,double> GetRow()
+map<unsigned,double> Table::GetRow()
 {
     //return distance vector for this node
     // to be passed to messages
     return dist[id];
 }
-bool RowUpdate(const unsigned src, const map<unsigned,double> toUpdate)
+void Table::RowUpdate(const unsigned src, const map<unsigned,double> toUpdate)
 {
     //given distance vector from other node
     //add to table
@@ -66,12 +66,12 @@ bool RowUpdate(const unsigned src, const map<unsigned,double> toUpdate)
     this.SelfUpdate();
 }
 
-void ChangeLink(const Link *l)
+void Table::ChangeLink(const Link *l)
 {
     dist[id][l.dest] = l.lat;
     this.SelfUpdate();
 }
-void SelfUpdate()
+void Table::SelfUpdate()
 {
     //recalculate nextHop
     //probably a better way to do this.
@@ -79,6 +79,6 @@ void SelfUpdate()
 
 Table *Table::get_routing_table() const
 {
-    return temp;
+    return this;
 }
 #endif

@@ -108,27 +108,29 @@ void Table::ChangeLink(const Link *l)
 void Table::SelfUpdate()
 {
     //recalculate nextHop
-    //probably a better way to do this.
+    //node that will be stored as nextHop for current
     unsigned tempNextHop;
-    double tempDist;
-    double dist;
+    //distance to test
+    double tempNextDist;
+    //shortest distance found so far
+    double nextDist;
     //iterate through nextHop
     //compare dist from this node to distance through intermediate node
     map<unsigned,double>::iterator outside = nextHop.begin();
     map<unsigned, map<unsigned,  double> >::iterator inside;
     while (outside!=nextHop.end()) {
         //store current shortest path
-        dist = dist[id][outside->second] + dist[outside->second][outside->first];
+        nextDist = dist[id][outside->second] + dist[outside->second][outside->first];
         tempNextHop = outside->second;
         //for all neighbors
         inside = dist.begin();
         if (inside->second.count(outside->first)==1) {
             //if there is a distance for this link (current -> intermediate + intermediate->endpoint
-            tempDist = dist[id][inside->first] + dist[inside->first][inside->second[outside->first]];
+            tempNextDist = dist[id][inside->first] + dist[inside->first][inside->second[outside->first]];
             // if it's shorter, keep track of it and which node it was
-            if(tempDist < dist)
+            if(tempNextDist < nextDist)
             {
-                dist = tempDist;
+                nextDist = tempNextDist;
                 tempNextHop = inside->first;
             }
         }

@@ -41,6 +41,13 @@ Table::Table(const int myID)
     //see Topology.cc (AddLink and ChangeLink).
     // node created, then links added one by one.
 }
+Table::Table(const Table &rhs)
+{
+    //copy constructor
+    dist = rhs.dist;
+    nextHop = rhs.nextHop;
+    id = rhs.id;
+}
 
 ostream & Table::Print(ostream &os) const
 {
@@ -68,7 +75,7 @@ void Table::RowUpdate(const unsigned src, const map<unsigned,double> toUpdate)
 
 void Table::ChangeLink(const Link *l)
 {
-    dist[id][(*l).dest] = (*l).lat;
+    dist[id][(*l).GetDest()] = (*l).GetLatency();
     SelfUpdate();
 }
 void Table::SelfUpdate()
@@ -77,8 +84,4 @@ void Table::SelfUpdate()
     //probably a better way to do this.
 }
 
-Table *Table::get_routing_table() const
-{
-    return this;
-}
 #endif

@@ -47,14 +47,14 @@ class Table {
  	int id;
  public:
    Table();
-   Table(const int myID); 
+   Table(const int myID);
+   Table(const Table &rhs);
    ostream & Print(ostream &os) const;
    unsigned GetNext(unsigned end);
    map<unsigned,double> GetRow();
    void RowUpdate(const unsigned src, const map<unsigned,double> toUpdate);
    void ChangeLink(const Link *l);
    void SelfUpdate();
-   Table *get_routing_table() const;
 };
 #endif
 

@@ -174,10 +174,12 @@ void Node::TimeOut()
 
 Node *Node::GetNextHop(const Node *destination) const
 {
+    return 0;
 }
 
 Table *Node::GetRoutingTable() const
 {
+    return 0;
 }
 
 

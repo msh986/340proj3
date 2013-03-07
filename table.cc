@@ -34,7 +34,7 @@ Table *get_routing_table() const
 Table::Table()
 { throw GeneralException(); }
 
-Table::Table(const int myID) :
+Table::Table(const int myID)
 {
     id = myID;
     //starts out with no links, don't worry about initializing table
@@ -42,9 +42,9 @@ Table::Table(const int myID) :
     // node created, then links added one by one.
 }
 
-ostream & Print(ostream &os) const
+ostream & Table::Print(ostream &os) const
 {
-    
+    return os;
 }
 unsigned Table::GetNext(unsigned end)
 {
@@ -63,13 +63,13 @@ void Table::RowUpdate(const unsigned src, const map<unsigned,double> toUpdate)
     //add to table
     //update nextHop
     dist[src] = toUpdate;
-    this.SelfUpdate();
+    SelfUpdate();
 }
 
 void Table::ChangeLink(const Link *l)
 {
-    dist[id][l.dest] = l.lat;
-    this.SelfUpdate();
+    dist[id][(*l).dest] = (*l).lat;
+    SelfUpdate();
 }
 void Table::SelfUpdate()
 {

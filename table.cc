@@ -37,6 +37,8 @@ Table::Table()
 Table::Table(const int myID)
 {
     id = myID;
+    dist[myID][myID] = 0.0;
+    nextHop[myID] = myID;
     //starts out with no links, don't worry about initializing table
     //see Topology.cc (AddLink and ChangeLink).
     // node created, then links added one by one.
@@ -82,6 +84,10 @@ void Table::SelfUpdate()
 {
     //recalculate nextHop
     //probably a better way to do this.
+    unsigned tempNext;
+    double dist;
+    //iterate through destinations
+    //compare dist from this node to distance through intermediate node
 }
 
 #endif

@@ -44,7 +44,7 @@ class Table {
  private:
  	map<unsigned, map<unsigned, double> > dist;
  	map<unsigned, unsigned> nextHop;
- 	int id;
+ 	unsigned id;
  public:
    Table();
    Table(const int myID);

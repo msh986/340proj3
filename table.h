@@ -43,13 +43,16 @@ class Table {
  private:
  	map<unsigned, map<unsigned, double>> dist;
  	map<unsigned, unsigned> nextHop;
- 	Node* id;
+ 	Node* node;
  public:
+    Table::Table()
+    Table::Table(const Node &myNode) 
    ostream & Print(ostream &os) const;
-   unsigned	GetNext(unsigned end);
+   unsigned GetNext(unsigned end);
    map<unsigned,double> GetRow();
    bool RowUpdate(const unsigned src, const map<unsigned,double> toUpdate);
    bool SelfUpdate(const Link *l);
+   Table *get_routing_table() const;
 };
 #endif
 

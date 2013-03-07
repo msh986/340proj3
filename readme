@@ -1,3 +1,6 @@
-members
-Matthew Hlavacek
-Andre Howes
+Routesim
+
+Simple event-driven simulator for link-state and distance vector routing.
+
+(c) 2003 Peter A. Dinda
+

@@ -50,6 +50,7 @@ class Node {
   virtual void SendToNeighbors(const RoutingMessage *m);
   virtual void SendToNeighbor(const Node *n, const RoutingMessage *m);
   virtual deque<Node*> *GetNeighbors();
+  virtual deque<Link*> *GetOutgoingLinks();
   virtual void SetTimeOut(const double timefromnow);
 
   //

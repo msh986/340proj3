@@ -52,7 +52,8 @@ class Table {
    unsigned GetNext(unsigned end);
    map<unsigned,double> GetRow();
    bool RowUpdate(const unsigned src, const map<unsigned,double> toUpdate);
-   bool SelfUpdate(const Link *l);
+   void ChangeLink(const Link *l);
+   void SelfUpdate();
    Table *get_routing_table() const;
 };
 #endif

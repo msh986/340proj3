@@ -37,15 +37,9 @@ Table::Table()
 Table::Table(const int myID) :
 {
     id = myID;
-    deque<*Link> outLinks = myNode.GetOutgoingLinks();
-    map<unsigned, map<unsigned, double>> dist;
-    map<unsigned, unsigned> nextHop;
-    deque<*Link>::iterator = outLinks.begin();
-    while (iterator!=outLinks.end()) {
-        dist[node.number][(*iterator).dest] = lat;
-        nextHop[(*iterator).dest] = (*iterator).dest;
-        iterator++;
-    }
+    //starts out with no links, don't worry about initializing table
+    //see Topology.cc (AddLink and ChangeLink).
+    // node created, then links added one by one.
 }
 
 ostream & Print(ostream &os) const
@@ -54,25 +48,37 @@ ostream & Print(ostream &os) const
 }
 unsigned GetNext(unsigned end)
 {
+    //nextHop should be complete
     return nextHop[end];
 }
 map<unsigned,double> GetRow()
 {
-    return dist[node.number];
+    //return distance vector for this node
+    // to be passed to messages
+    return dist[id];
 }
 bool RowUpdate(const unsigned src, const map<unsigned,double> toUpdate)
 {
+    //given distance vector from other node
+    //add to table
+    //update nextHop
     dist[src] = toUpdate;
-    this.selfUpdate();
+    this.SelfUpdate();
 }
-bool SelfUpdate(const Link *l)
+
+void ChangeLink(const Link *l)
 {
-    dist[node.number][l.dest] = l.lat;
-    this.selfUpdate;
+    dist[id][l.dest] = l.lat;
+    this.SelfUpdate();
+}
+void SelfUpdate()
+{
+    //recalculate nextHop
+    //probably a better way to do this.
 }
 
 Table *Table::get_routing_table() const
 {
-    return this;
+    return temp;
 }
 #endif

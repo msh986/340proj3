@@ -45,12 +45,13 @@ Node::~Node()
 // so that the corresponding node can recieve the ROUTING_MESSAGE_ARRIVAL event at the proper time
 void Node::SendToNeighbors(const RoutingMessage *m)
 {
-  deque<Node*> *neighborNodes = GetNeighbors();
-  deque<Node*>::iterator nodeIter;
+  context->SendToNeighbors(this,m);
+  // deque<Node*> *neighborNodes = GetNeighbors();
+  // deque<Node*>::iterator nodeIter;
   
-  for (nodeIter = neighborNodes->begin(); nodeIter != neighborNodes->end(); nodeIter++) {
-    SendToNeighbor(*nodeIter, m);
-  }
+  // for (nodeIter = neighborNodes->begin(); nodeIter != neighborNodes->end(); nodeIter++) {
+  //   SendToNeighbor(*nodeIter, m);
+  // }
 }
 
 void Node::SendToNeighbor(const Node *n, const RoutingMessage *m)
@@ -197,7 +198,7 @@ void Node::LinkHasBeenUpdated(const Link *l)
 
 void Node::ProcessIncomingRoutingMessage(const RoutingMessage *m)
 {
-  cerr <<"routing message received"<<endl;
+  cerr <<"routing message received at node "<< number <<" from node "<< m->nodeID<<endl;
   map<unsigned, double> oldDist = table->GetRow();
   table->RowUpdate(m->nodeID,m->distances);
   map<unsigned, double> newDist = table->GetRow();
@@ -231,7 +232,7 @@ Node *Node::GetNextHop(const Node *destination) const
       }
     nodeIter++;
   }
-  return 0;
+  //return 0;
 }
 
 Table *Node::GetRoutingTable() const
@@ -243,7 +244,7 @@ Table *Node::GetRoutingTable() const
 
 ostream & Node::Print(ostream &os) const
 {
-  os << "Node(number="<<number<<", lat="<<lat<<", bw="<<bw;
+  os << "Node(number="<<number<<", lat="<<lat<<", bw="<<bw<<"table: "<<*table;
   return os;
 }
 #endif

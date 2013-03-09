@@ -38,7 +38,7 @@ Table::Table()
 Table::Table(const unsigned myID)
 {
     id = myID;
-    dist[myID][myID] = 0.0;
+    dist[myID][myID] = 0;
     nextHop[myID] = myID;
     //starts out with no links, don't worry about initializing table
     //see Topology.cc (AddLink and ChangeLink).
@@ -53,7 +53,30 @@ Table::Table(const Table &rhs)
 }
 
 ostream & Table::Print(ostream &os) const
-{ 
+{   
+    Table *table2 = new Table(*this);
+    os<<"Dist Table for node " << id << ": ";
+    map<unsigned,double>::iterator inside;
+    map<unsigned, map<unsigned,  double> >::iterator outside = table2->dist.begin();
+    while (outside!=table2->dist.end()) {
+        os << "Row for " << outside->first << ": ";
+        inside = outside->second.begin();
+        while(inside!=outside->second.end())
+        {
+            os<< "(" << inside->first << "," << inside->second << ") ";
+            inside++;
+        }
+        outside++;
+        os << endl;
+    }
+    map<unsigned,unsigned>::iterator nextIter = table2->nextHop.begin();
+    os <<"NextHop Table: ";
+    while(nextIter != table2->nextHop.end())
+    {
+        os<< "(" << nextIter->first << "," << nextIter->second << ") ";
+        nextIter++;
+    }
+    os<<endl;
     return os;
 }
 unsigned Table::GetNext(unsigned end)
@@ -79,14 +102,21 @@ void Table::RowUpdate(const unsigned src, const map<unsigned,double> toUpdate)
     //given distance vector from other node
     //add to table
     //update nextHop
-    dist[src] = toUpdate;
-    map<unsigned,double>::iterator iter = dist[src].begin();
+    map<unsigned,double> copy = toUpdate;
+    map<unsigned,double>::iterator iter = copy.begin();
+    while(iter!=copy.end())
+    {
+        dist[src][iter->first]=iter->second;
+        iter++;
+    }
+    iter = dist[src].begin();
     //check for new nodes
     while(iter!=dist[src].end())
     {
         //if a node is not present in this node's links
         // and also not in the nextHop table
         if(dist[id].count(iter->first)==0&&nextHop.count(iter->first)==0)
+        //if(nextHop.count(iter->first)==0)
         {
             //add to nextHop table
             nextHop[iter->first] = src;
@@ -131,10 +161,15 @@ void Table::SelfUpdate()
             //if there is a distance for this link (current -> intermediate + intermediate->endpoint
             tempNextDist = dist[id][inside->first] + dist[inside->first][outside->first];
             // if it's shorter, keep track of it and which node it was
-            if(tempNextDist < nextDist)
+            if(tempNextDist <= nextDist)
             {
                 nextDist = tempNextDist;
-                tempNextHop = inside->first;
+                if(inside->first != id)
+                {
+                    tempNextHop = inside->first;
+                }else{
+                    tempNextHop = outside->first;
+                }
             }
         }
         inside++;

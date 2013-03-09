@@ -229,7 +229,7 @@ Node *Node::GetNextHop(const Node *destination) const
       }
     nodeIter++;
   }
-  return this2;
+  return 0;
 }
 
 Table *Node::GetRoutingTable() const

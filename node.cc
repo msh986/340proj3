@@ -45,11 +45,33 @@ Node::~Node()
 // so that the corresponding node can recieve the ROUTING_MESSAGE_ARRIVAL event at the proper time
 void Node::SendToNeighbors(const RoutingMessage *m)
 {
+  deque<Node*> *neighborNodes = GetNeighbors();
+  deque<Node*>::iterator nodeIter;
+  
+  for (nodeIter = neighborNodes->begin(); nodeIter != neighborNodes->end(); nodeIter++) {
+    SendToNeighbor(*nodeIter, m);
+  }
 }
 
 void Node::SendToNeighbor(const Node *n, const RoutingMessage *m)
 {
-
+  deque<Link*> *outLinks = context->GetOutgoingLinks(n);
+  deque<Link*>::iterator linkIter = outLinks->begin();
+  Link tempLink;
+  
+  while(linkIter != outLinks->end())
+  {
+    if((*linkIter)->GetSrc() == n->GetNumber()){
+      tempLink = *(*linkIter);
+      break;
+    }
+    linkIter++;
+  }
+  Event *out = new Event(context->GetTime()+tempLink.GetLatency(),
+                        ROUTING_MESSAGE_ARRIVAL,
+                        (void*) n,
+                        (void*) m);
+  context->PostEvent(out);
 }
 
 deque<Node*> *Node::GetNeighbors()
@@ -162,7 +184,7 @@ void Node::LinkHasBeenUpdated(const Link *l)
   table->ChangeLink(l);
    map<unsigned, double> newDist = table->GetRow();
   if(oldDist != newDist){
-    //SendToNeighbors(new RoutingMessage(number, newDist));
+    SendToNeighbors(new RoutingMessage(number, newDist));
     cerr << "table has changed" << endl;
   };
 
@@ -173,7 +195,15 @@ void Node::LinkHasBeenUpdated(const Link *l)
 
 void Node::ProcessIncomingRoutingMessage(const RoutingMessage *m)
 {
-
+  cerr <<"routing message received"<<endl;
+  map<unsigned, double> oldDist = table->GetRow();
+  table->RowUpdate(m->nodeID,m->distances);
+  map<unsigned, double> newDist = table->GetRow();
+  //comparison isn't working. Otherwise great. 
+  if(oldDist != newDist){
+    SendToNeighbors(new RoutingMessage(number, newDist));
+    cerr << "table has changed" << endl;
+  };
 }
 
 void Node::TimeOut()
@@ -190,8 +220,11 @@ Node *Node::GetNextHop(const Node *destination) const
   while(nodeIter!=neighborsOfNode->end())
   {
     if(next==(*nodeIter)->GetNumber())
-      { Node *result = *nodeIter;
-        return result;}
+      {
+        //needed the double dereference here. 
+        Node *result = new Node(**nodeIter);
+        return result;
+      }
     nodeIter++;
   }
   return this2;

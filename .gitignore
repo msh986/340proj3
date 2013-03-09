@@ -1,2 +1,10 @@
 
 *.o
+
+_topo.out
+
+libroutelab.a
+
+routesim
+
+*.o

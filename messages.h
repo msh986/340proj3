@@ -27,7 +27,10 @@ struct RoutingMessage {
 #if defined(DISTANCEVECTOR)
 struct RoutingMessage {
 
+  unsigned nodeID;
+  map<unsigned,double> distances;
   RoutingMessage();
+  RoutingMessage(unsigned number, map<unsigned,double> &table);
   RoutingMessage(const RoutingMessage &rhs);
   RoutingMessage &operator=(const RoutingMessage &rhs);
 

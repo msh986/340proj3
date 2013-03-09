@@ -161,7 +161,10 @@ void Node::LinkHasBeenUpdated(const Link *l)
   // // update our table
   table->ChangeLink(l);
    map<unsigned, double> newDist = table->GetRow();
-
+  if(oldDist != newDist){
+    //SendToNeighbors(new RoutingMessage(number, newDist));
+    cerr << "table has changed" << endl;
+  };
 
   // send out routing mesages
   cerr << *this<<": Link Update: "<<*l<<endl;

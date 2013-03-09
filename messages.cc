@@ -37,6 +37,12 @@ ostream &RoutingMessage::Print(ostream &os) const
 RoutingMessage::RoutingMessage()
 {}
 
+RoutingMessage::RoutingMessage(unsigned number, map<unsigned,double> &table)
+{
+  distances = table;
+  nodeID = number;
+}
+
 
 RoutingMessage::RoutingMessage(const RoutingMessage &rhs)
 {}

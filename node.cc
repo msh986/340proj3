@@ -205,7 +205,9 @@ void Node::ProcessIncomingRoutingMessage(const RoutingMessage *m)
   if(oldDist != newDist){
     SendToNeighbors(new RoutingMessage(number, newDist));
     cerr << "table has changed" << endl;
-  };
+  }else{
+    cerr << "table has not changed" << endl;
+  }
 }
 
 void Node::TimeOut()

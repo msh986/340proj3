@@ -129,7 +129,7 @@ void Table::SelfUpdate()
         {
         if (inside->second.count(outside->first)==1) {
             //if there is a distance for this link (current -> intermediate + intermediate->endpoint
-            tempNextDist = dist[id][inside->first] + dist[inside->first][inside->second[outside->first]];
+            tempNextDist = dist[id][inside->first] + dist[inside->first][outside->first];
             // if it's shorter, keep track of it and which node it was
             if(tempNextDist < nextDist)
             {

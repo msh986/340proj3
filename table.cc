@@ -9,6 +9,7 @@ ostream & Table::Print(ostream &os) const
   os << "Table()";
   return os;
 }
+Table::Table(const unsigned myID){}
 #endif
 
 #if defined(LINKSTATE)

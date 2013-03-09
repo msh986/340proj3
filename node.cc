@@ -55,13 +55,13 @@ void Node::SendToNeighbors(const RoutingMessage *m)
 
 void Node::SendToNeighbor(const Node *n, const RoutingMessage *m)
 {
-  deque<Link*> *outLinks = context->GetOutgoingLinks(n);
+  deque<Link*> *outLinks = context->GetOutgoingLinks(this);
   deque<Link*>::iterator linkIter = outLinks->begin();
   Link tempLink;
   
   while(linkIter != outLinks->end())
   {
-    if((*linkIter)->GetSrc() == n->GetNumber()){
+    if((*linkIter)->GetDest() == n->GetNumber()){
       tempLink = *(*linkIter);
       break;
     }
@@ -186,7 +186,9 @@ void Node::LinkHasBeenUpdated(const Link *l)
   if(oldDist != newDist){
     SendToNeighbors(new RoutingMessage(number, newDist));
     cerr << "table has changed" << endl;
-  };
+  }else{
+    cerr << "table has not changed" << endl;
+  }
 
   // send out routing mesages
   cerr << *this<<": Link Update: "<<*l<<endl;

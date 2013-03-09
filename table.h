@@ -10,6 +10,8 @@ using namespace std;
 class Table {
   // Students should write this class
  public:
+  Table();
+  Table(const unsigned myID);
   ostream & Print(ostream &os) const;
 };
 #endif

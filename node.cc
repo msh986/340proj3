@@ -5,13 +5,15 @@
 
 Node::Node(const unsigned n, SimulationContext *c, double b, double l) : 
     number(n), context(c), bw(b), lat(l) 
-{}
+{
+  table=new Table(n);
+}
 
 Node::Node() 
 { throw GeneralException(); }
 
 Node::Node(const Node &rhs) : 
-  number(rhs.number), context(rhs.context), bw(rhs.bw), lat(rhs.lat) {}
+  number(rhs.number), context(rhs.context), bw(rhs.bw), lat(rhs.lat), table(rhs.table){}
 
 Node & Node::operator=(const Node &rhs) 
 {
@@ -155,7 +157,12 @@ ostream & Node::Print(ostream &os) const
 
 void Node::LinkHasBeenUpdated(const Link *l)
 {
-  // update our table
+   map<unsigned, double> oldDist = table->GetRow();
+  // // update our table
+  table->ChangeLink(l);
+   map<unsigned, double> newDist = table->GetRow();
+
+
   // send out routing mesages
   cerr << *this<<": Link Update: "<<*l<<endl;
 }
@@ -173,13 +180,24 @@ void Node::TimeOut()
 
 
 Node *Node::GetNextHop(const Node *destination) const
-{
-    return 0;
+{ Node *this2=new Node(*this);
+  unsigned next=table->GetNext(destination->GetNumber());
+  deque<Node*> *neighborsOfNode = (*this2).GetNeighbors();
+  deque<Node*>::iterator nodeIter=neighborsOfNode->begin();
+  while(nodeIter!=neighborsOfNode->end())
+  {
+    if(next==(*nodeIter)->GetNumber())
+      { Node *result = *nodeIter;
+        return result;}
+    nodeIter++;
+  }
+  return this2;
 }
 
 Table *Node::GetRoutingTable() const
 {
-    return 0;
+    Table *table2 = table;
+    return table2;
 }
 
 

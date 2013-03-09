@@ -34,7 +34,7 @@ Table *get_routing_table() const
 Table::Table()
 { throw GeneralException(); }
 
-Table::Table(const int myID)
+Table::Table(const unsigned myID)
 {
     id = myID;
     dist[myID][myID] = 0.0;
@@ -124,6 +124,8 @@ void Table::SelfUpdate()
         tempNextHop = outside->second;
         //for all neighbors
         inside = dist.begin();
+        while(inside!=dist.end())
+        {
         if (inside->second.count(outside->first)==1) {
             //if there is a distance for this link (current -> intermediate + intermediate->endpoint
             tempNextDist = dist[id][inside->first] + dist[inside->first][inside->second[outside->first]];
@@ -134,8 +136,11 @@ void Table::SelfUpdate()
                 tempNextHop = inside->first;
             }
         }
+        inside++;
+    	}
         //set nextHop to the shortest path
         outside->second = tempNextHop;
+        outside++;
     }
 }
 

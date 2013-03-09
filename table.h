@@ -47,7 +47,7 @@ class Table {
  	unsigned id;
  public:
    Table();
-   Table(const int myID);
+   Table(const unsigned myID);
    Table(const Table &rhs);
    ostream & Print(ostream &os) const;
    unsigned GetNext(unsigned end);

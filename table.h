@@ -20,13 +20,23 @@ class Table {
 #define NOLINK -1;
 #include <deque>;
 struct neighbordata{
-  unsigned id, double length;
+  unsigned idVal, double length;
+  neighbordata(unsigned first, double second):idVal(first),length(second){}
+};
+// struct queueNode{
+//   unsigned idVal; double currentDist;
+// };
+class greater_neighbor_length
+{ public:
+    bool operator() ( const neighborData& a, const  neighborData& b) const
+    { return a.length>b.length ; }
 };
 class Table {
 	private:
+  map<unsigned,unsigned>predecessor;
 	map<unsigned,double> costTable;
   map<unsigned,bool>visited;
-  deque<unsigned> nodeQueue;
+  vector<neighbordata> nodeQueue;
 	map<unsigned,unsigned> nextHop;
   map<unsigned,vector<neighbordata>> neighborhoods;
 	unsigned id;

@@ -25,31 +25,51 @@ Table::Table(const unsigned myID)
     //see Topology.cc (AddLink and ChangeLink).
     // node created, then links added one by one.
 }
-void dijkstra(){
+void Table::dijkstra(){
     unsigned nodeID;
     neighbordata tempNeighbor;
+    neighbordata tempNodeInQueue;
     double cost;
-    double linkCost;
-    double currentFloor;
-    double costToNode;
     map<unsigned, vector<nieghbordata>>::iterator outside = nieghborhoods.begin();
-    while (outside!=this->neighborhoods.end()) {
+    while (outside!=neighborhoods.end()) {
     nodeID=outside->first;
-    costTable[nodeID]->second=INT_MAX;
-    visited[nodeID]->second=false;
+    if(nodeID!=id){
+    costTable[nodeID]=INT_MAX;
+    visited[nodeID]=false;
+    predecessor[nodeID]=nodeID;
+    nodeQueue.pushBack(neighbordata(nodeID,INT_MAX))
+    }
     }
     nodeID=id;
-    costTable[nodeID]->second=0;
-    nodeQueue.pushBack(nodeID);
+    costTable[nodeID]=0;
+    visited[nodeID]=false;
+    nodeQueue.pushBack(neighbordata(nodeID,0));
+    make_heap(nodeQueue.begin(),nodeQueue.end(),greater_neighbor_length);
+    cost=0;
     while(!nodeQueue.empty()){
-        nodeID=nodeQueue.popFront();
-        visited[nodeID]->second=true;
-
-    for(x=0;x<neighborhoods[nodeID]->second.size())
+        tempNodeInQueue=nodeQueue.popFront();
+        nodeID=tempNodeInQueue.idVal;
+        visited[nodeID]=true;
+        costTable[nodeID]=tempNodeInQueue.length;
+        cost=costTable[nodeID];
+    for(x=0;x<neighborhoods[nodeID].size())
     {   tempNeighbor=neighborhoods[nodeID][x];
-        nodeQueue.pushBack(tempNeighbor.id);
-        costTable[tempNeighbor.id]->second=tempNeighbor.length;
+        if(!visited[tempNeighbor.idVal])
+        {
+        if(costTable[tempNeighbor.idVal>(cost+tempNeighbor.length))
+        {   for(x=0;x<nodeQueue.size();x++)
+            {
+                if(nodeQueue[x].idVal==tempNeighbor.idVal)
+                {
+                    nodeQueue[x].length=cost+tempNeighbor.length;
+                }
+            }
+            make_heap(nodeQueue.begin(),nodeQueue.end(),greater_neighbor_length);
+            costTable[tempNeighbor.idVal]=cost+tempNeighbor.length;
+            predecessor[tempNeighbor.idVal]=nodeID;
+        }
     }
+}
 }
 }
 Table::Table(const Table &rhs)

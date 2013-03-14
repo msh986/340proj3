@@ -22,7 +22,16 @@ RoutingMessage::RoutingMessage()
 
 
 RoutingMessage::RoutingMessage(const RoutingMessage &rhs)
-{}
+{neighborhood=rhs.neighborhood;
+nodeID=rhs.nodeID;
+origNodeID=rhs.nodeID;
+}
+RoutingMessage::RoutingMessage(unsigned last,unsigned source,vector<neighbordata> &neighbors)
+{
+	nodeID=last;
+	origNodeID=source;
+	neighborhood=neighbors;
+}
 
 #endif
 

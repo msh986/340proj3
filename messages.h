@@ -5,6 +5,7 @@
 
 #include "node.h"
 #include "link.h"
+#include "table.h"
 
 #if defined(GENERIC)
 struct RoutingMessage {
@@ -17,10 +18,9 @@ struct RoutingMessage {
 struct RoutingMessage {
   unsigned nodeID;
   unsigned origNodeID;
-  unsigned ttl;
-  map<unsigned,double> neighborhood;
+  vector<neighbordata> neighborhood;
   RoutingMessage();
-  RoutingMessage(unsigned number, map<unsigned,double> &table, unsigned ttl, unsigned origNodeID);
+  RoutingMessage(unsigned last,unsigned source,vector<neighbordata> &neighbors);
   RoutingMessage(const RoutingMessage &rhs);
   RoutingMessage &operator=(const RoutingMessage &rhs);
 

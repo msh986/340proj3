@@ -13,6 +13,55 @@ Table::Table(const unsigned myID){}
 #endif
 
 #if defined(LINKSTATE)
+
+Table::Table()
+{ throw GeneralException(); }
+Table::Table(const unsigned myID)
+{
+    id = myID;
+    dist[myID][myID] = 0;
+    nextHop[myID] = myID;
+    //starts out with no links, don't worry about initializing table
+    //see Topology.cc (AddLink and ChangeLink).
+    // node created, then links added one by one.
+}
+void dijkstra(){
+    unsigned nodeID;
+    neighbordata tempNeighbor;
+    double cost;
+    double linkCost;
+    double currentFloor;
+    double costToNode;
+    map<unsigned, vector<nieghbordata>>::iterator outside = nieghborhoods.begin();
+    while (outside!=this->neighborhoods.end()) {
+    nodeID=outside->first;
+    costTable[nodeID]->second=INT_MAX;
+    visited[nodeID]->second=false;
+    }
+    nodeID=id;
+    costTable[nodeID]->second=0;
+    nodeQueue.pushBack(nodeID);
+    while(!nodeQueue.empty()){
+        nodeID=nodeQueue.popFront();
+        visited[nodeID]->second=true;
+
+    for(x=0;x<neighborhoods[nodeID]->second.size())
+    {   tempNeighbor=neighborhoods[nodeID][x];
+        nodeQueue.pushBack(tempNeighbor.id);
+        costTable[tempNeighbor.id]->second=tempNeighbor.length;
+    }
+}
+}
+Table::Table(const Table &rhs)
+{
+    //copy constructor
+    costTable=rhs.CostTable;
+    nodeQueue=rhs.nodeQueue;
+    neighborhoods=rhs.neighborhoods;
+    nextHop = rhs.nextHop;
+    id = rhs.id;
+}
+
 ostream & Print(ostream &os) const
 {
     
@@ -26,6 +75,7 @@ bool LinkUpdate(const unsigned src, const unsigned dest, double l, double ts)
 {
     
 }
+vector<neighbordata> Table::GetRow()
 Table *get_routing_table() const
 {
     return this;

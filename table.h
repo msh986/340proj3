@@ -25,7 +25,8 @@ struct neighbordata{
 class Table {
 	private:
 	map<unsigned,double> costTable;
-  deque<unsigned> nodeQueue
+  map<unsigned,bool>visited;
+  deque<unsigned> nodeQueue;
 	map<unsigned,unsigned> nextHop;
   map<unsigned,vector<neighbordata>> neighborhoods;
 	unsigned id;

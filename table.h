@@ -28,7 +28,7 @@ struct neighbordata{
 // };
 class greater_neighbor_length
 { public:
-    bool operator() ( const neighborData& a, const  neighborData& b) const
+    bool operator() ( const neighbordata& a, const  neighbordata& b) const
     { return a.length>b.length ; }
 };
 class Table {

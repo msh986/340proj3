@@ -47,7 +47,9 @@ void Table::dijkstra(){
     make_heap(nodeQueue.begin(),nodeQueue.end(),greater_neighbor_length);
     cost=0;
     while(!nodeQueue.empty()){
-        tempNodeInQueue=nodeQueue.popFront();
+        tempNodeInQueue=nodeQueue.front();
+        pop_heap(nodeQueue.begin(),nodeQueue.end()); 
+        nodeQueue.pop_back();
         nodeID=tempNodeInQueue.idVal;
         visited[nodeID]=true;
         costTable[nodeID]=tempNodeInQueue.length;

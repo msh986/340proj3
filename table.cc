@@ -17,9 +17,10 @@ ostream & Print(ostream &os) const
 {
     
 }
-unsigned GetNext(const unsigned goal)
+unsigned Table::GetNext(unsigned end)
 {
-    
+    //nextHop should be complete
+    return nextHop[end];
 }
 bool LinkUpdate(const unsigned src, const unsigned dest, double l, double ts)
 {
@@ -30,7 +31,6 @@ Table *get_routing_table() const
     return this;
 }
 #endif
-
 #if defined(DISTANCEVECTOR)
 Table::Table()
 { throw GeneralException(); }

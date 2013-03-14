@@ -1,7 +1,6 @@
 #ifndef _table
 #define _table
 
-
 #include <iostream>
 
 using namespace std;
@@ -18,21 +17,30 @@ class Table {
 
 
 #if defined(LINKSTATE)
-#include <deque>
-
+#define NOLINK -1;
+#include <deque>;
+struct neighbordata{
+  unsigned id, double length;
+};
 class Table {
 	private:
-	map<int,double> costTable;
-	map<int, int> nextHop;
+	map<unsigned,double> costTable;
+  deque<unsigned> nodeQueue
+	map<unsigned,unsigned> nextHop;
+  map<unsigned,vector<neighbordata>> neighborhoods;
 	unsigned id;
-	vector<unsigned> nodes;
-	vector<Link*> links;
 	void dijkstra();
   // Students should write this class
  public:
+  Table();
+  Table(const unsigned myID);
+  Table(const Table &rhs);
   ostream & Print(ostream &os) const;
   unsigned GetNext(const unsigned goal);
-  bool LinkUpdate(const unsigned src, const unsigned dest, double l, double ts);
+  vector<neighbordata> GetRow();
+  void ChangeLink(const Link *l);
+  void NeighborUpdate(const unsigned src, const vector<neighbordata> toupdate);
+  void Refresh();
   Table *get_routing_table() const;
 };
 #endif

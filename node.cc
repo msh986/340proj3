@@ -140,14 +140,16 @@ ostream & Node::Print(ostream &os) const
 
 
 void Node::LinkHasBeenUpdated(const Link *l)
-{
+{ //if neighbor link, update appropriate row in adjacency matrix, update djikstra's, send out msg on all links but this.
   cerr << *this<<": Link Update: "<<*l<<endl;
+  return;
 }
 
 
 void Node::ProcessIncomingRoutingMessage(const RoutingMessage *m)
 {
   cerr << *this << " Routing Message: "<<*m;
+  return;
 }
 
 void Node::TimeOut()

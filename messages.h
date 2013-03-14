@@ -15,8 +15,12 @@ struct RoutingMessage {
 
 #if defined(LINKSTATE)
 struct RoutingMessage {
-
+  unsigned nodeID;
+  unsigned origNodeID;
+  unsigned ttl;
+  map<unsigned,double> neighborhood;
   RoutingMessage();
+  RoutingMessage(unsigned number, map<unsigned,double> &table, unsigned ttl, unsigned origNodeID);
   RoutingMessage(const RoutingMessage &rhs);
   RoutingMessage &operator=(const RoutingMessage &rhs);
 

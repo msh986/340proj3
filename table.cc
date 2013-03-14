@@ -89,11 +89,15 @@ ostream & Print(ostream &os) const
     
 }
 unsigned Table::GetNext(unsigned end)
-{
-    //nextHop should be complete
-    return nextHop[end];
+{   unsigned predecessor=predecessor[end];
+    unsigned currentend=end;
+    while(predecessor!=id){
+        currentend=predecessor[currentend];
+        predecessor=predecessor[currentend];
+        }
+        return currentend;
 }
-bool LinkUpdate(const unsigned src, const unsigned dest, double l, double ts)
+void LinkUpdate(const *link l)
 {
     
 }

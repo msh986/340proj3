@@ -115,7 +115,9 @@ ostream & Node::Print(ostream &os) const
 #endif
 
 #if defined(LINKSTATE)
-
+#include <deque>
+#include <map>
+#include <vector>
 
 void Node::LinkHasBeenUpdated(const Link *l)
 { //if neighbor link, update appropriate row in adjacency matrix, update djikstra's, send out msg on all links but this.

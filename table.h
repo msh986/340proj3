@@ -18,7 +18,10 @@ class Table {
 
 #if defined(LINKSTATE)
 #define NOLINK -1;
-#include <deque>;
+#include <deque>
+#include <map>
+#include <vector>
+#include "node.h"
 struct neighbordata{
   unsigned idVal, double length;
   neighbordata(unsigned first, double second):idVal(first),length(second){}

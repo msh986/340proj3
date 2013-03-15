@@ -23,8 +23,9 @@ class Table {
 #include <vector>
 #include "node.h"
 struct neighbordata{
-  unsigned idVal, double length;
+  unsigned idVal; double length;
   neighbordata(unsigned first, double second):idVal(first),length(second){}
+  neighbordata(){idVal=0;length=0;}
 };
 // struct queueNode{
 //   unsigned idVal; double currentDist;
@@ -36,12 +37,12 @@ class greater_neighbor_length
 };
 class Table {
 	private:
-  map<unsigned,unsigned>predecessor;
+  map<unsigned,unsigned> predecessor;
 	map<unsigned,double> costTable;
-  map<unsigned,bool>visited;
+  map<unsigned,bool> visited;
   vector<neighbordata> nodeQueue;
 	map<unsigned,unsigned> nextHop;
-  map<unsigned,vector<neighbordata>> neighborhoods;
+  map<unsigned,vector<neighbordata> > neighborhoods;
 	unsigned id;
 	void dijkstra();
   // Students should write this class

@@ -15,12 +15,12 @@ Table::Table(const unsigned myID){}
 #if defined(LINKSTATE)
 
 Table::Table()
-{ throw GeneralException(); }
+{
+  throw GeneralException();
+}
 Table::Table(const unsigned myID)
 {
     id = myID;
-    dist[myID][myID] = 0;
-    nextHop[myID] = myID;
     //starts out with no links, don't worry about initializing table
     //see Topology.cc (AddLink and ChangeLink).
     // node created, then links added one by one.
@@ -30,15 +30,15 @@ void Table::dijkstra(){
     neighbordata tempNeighbor;
     neighbordata tempNodeInQueue;
     double cost;
-    map<unsigned, vector<nieghbordata>>::iterator outside = nieghborhoods.begin();
+    map<unsigned, vector<neighbordata> >::iterator outside = neighborhoods.begin();
     while (outside!=neighborhoods.end()) {
-    nodeID=outside->first;
-    if(nodeID!=id){
-    costTable[nodeID]=INT_MAX;
-    visited[nodeID]=false;
-    predecessor[nodeID]=nodeID;
-    nodeQueue.pushBack(neighbordata(nodeID,INT_MAX))
-    }
+      nodeID=outside->first;
+      if(nodeID!=id){
+        costTable[nodeID]=INT_MAX;
+        visited[nodeID]=false;
+        predecessor[nodeID]=nodeID;
+        nodeQueue.pushBack(neighbordata(nodeID,INT_MAX));
+      }
     }
     nodeID=id;
     costTable[nodeID]=0;
@@ -54,25 +54,26 @@ void Table::dijkstra(){
         visited[nodeID]=true;
         costTable[nodeID]=tempNodeInQueue.length;
         cost=costTable[nodeID];
-    for(x=0;x<neighborhoods[nodeID].size())
-    {   tempNeighbor=neighborhoods[nodeID][x];
-        if(!visited[tempNeighbor.idVal])
+        for(x=0;x<neighborhoods[nodeID].size())
         {
-        if(costTable[tempNeighbor.idVal>(cost+tempNeighbor.length))
-        {   for(x=0;x<nodeQueue.size();x++)
-            {
-                if(nodeQueue[x].idVal==tempNeighbor.idVal)
+          tempNeighbor=neighborhoods[nodeID][x];
+          if(!visited[tempNeighbor.idVal])
+          {
+            if(costTable[tempNeighbor.idVal]>(cost+tempNeighbor.length))
+            {   for(x=0;x<nodeQueue.size();x++)
                 {
-                    nodeQueue[x].length=cost+tempNeighbor.length;
+                    if(nodeQueue[x].idVal==tempNeighbor.idVal)
+                    {
+                        nodeQueue[x].length=cost+tempNeighbor.length;
+                    }
                 }
+                make_heap(nodeQueue.begin(),nodeQueue.end(),greater_neighbor_length);
+                costTable[tempNeighbor.idVal]=cost+tempNeighbor.length;
+                predecessor[tempNeighbor.idVal]=nodeID;
             }
-            make_heap(nodeQueue.begin(),nodeQueue.end(),greater_neighbor_length);
-            costTable[tempNeighbor.idVal]=cost+tempNeighbor.length;
-            predecessor[tempNeighbor.idVal]=nodeID;
+          }
         }
     }
-}
-}
 }
 Table::Table(const Table &rhs)
 {
@@ -94,8 +95,8 @@ unsigned Table::GetNext(unsigned end)
     while(predecessor!=id){
         currentend=predecessor[currentend];
         predecessor=predecessor[currentend];
-        }
-        return currentend;
+    }
+    return currentend;
 }
 void LinkUpdate(const *link l)
 {
@@ -104,9 +105,9 @@ void LinkUpdate(const *link l)
 vector<neighbordata>
 Table::GetRow()
 {
-                     return nodeQueue;
+    return nodeQueue;
 }
-Table *get_routing_table() const
+Table *Table::get_routing_table() const
 {
     return this;
 }

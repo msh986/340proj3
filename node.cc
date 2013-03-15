@@ -137,16 +137,16 @@ void Node::TimeOut()
   cerr << *this << " got a timeout: ignored"<<endl;
 }
 
-Node *Node::GetNextHop(const Node *destination)
+Node *Node::GetNextHop(const Node *destination) const
 {
-  unsigned next = table.GetNext(destination->GetNumber);
-  Node tempNext = context->FindMatchingNode(new Node(next,0,0,0));
-  return new Node(tempNext);
+  unsigned next = table->GetNext(destination->GetNumber());
+  Node *tempNext = context->FindMatchingNode(new Node(next,0,0,0));
+  return new Node(*tempNext);
 }
 
 Table *Node::GetRoutingTable() const
 {
-  return new Table(table);
+  return new Table(*table);
 }
 
 

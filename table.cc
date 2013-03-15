@@ -101,7 +101,11 @@ void LinkUpdate(const *link l)
 {
     
 }
-vector<neighbordata> Table::GetRow()
+vector<neighbordata>
+Table::GetRow()
+{
+                     return nodeQueue;
+}
 Table *get_routing_table() const
 {
     return this;

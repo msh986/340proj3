@@ -46,33 +46,11 @@ Node::~Node()
 void Node::SendToNeighbors(const RoutingMessage *m)
 {
   context->SendToNeighbors(this,m);
-  // deque<Node*> *neighborNodes = GetNeighbors();
-  // deque<Node*>::iterator nodeIter;
-  
-  // for (nodeIter = neighborNodes->begin(); nodeIter != neighborNodes->end(); nodeIter++) {
-  //   SendToNeighbor(*nodeIter, m);
-  // }
 }
 
 void Node::SendToNeighbor(const Node *n, const RoutingMessage *m)
 {
-  deque<Link*> *outLinks = context->GetOutgoingLinks(this);
-  deque<Link*>::iterator linkIter = outLinks->begin();
-  Link tempLink;
-  
-  while(linkIter != outLinks->end())
-  {
-    if((*linkIter)->GetDest() == n->GetNumber()){
-      tempLink = *(*linkIter);
-      break;
-    }
-    linkIter++;
-  }
-  Event *out = new Event(context->GetTime()+tempLink.GetLatency(),
-                        ROUTING_MESSAGE_ARRIVAL,
-                        (void*) n,
-                        (void*) m);
-  context->PostEvent(out);
+  context->SendToNeighbor(this,n,m);
 }
 
 deque<Node*> *Node::GetNeighbors()
@@ -157,22 +135,22 @@ void Node::TimeOut()
   cerr << *this << " got a timeout: ignored"<<endl;
 }
 
-Node *Node::GetNextHop(const Node *destination) const
+Node *Node::GetNextHop(const Node *destination)
 {
-  // WRITE
-  return 0;
+  unsigned next = table.GetNext(destination->GetNumber);
+  Node tempNext = context->FindMatchingNode(new Node(next,0,0,0));
+  return new Node(tempNext);
 }
 
 Table *Node::GetRoutingTable() const
 {
-  // WRITE
-  return 0;
+  return new Table(table);
 }
 
 
 ostream & Node::Print(ostream &os) const
 {
-  os << "Node(number="<<number<<", lat="<<lat<<", bw="<<bw<<")";
+  os << "Node(number="<<number<<", lat="<<lat<<", bw="<<bw<<")\nRouting Table: "<<table<<endl;
   return os;
 }
 #endif
